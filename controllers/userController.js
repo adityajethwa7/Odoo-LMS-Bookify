@@ -4,29 +4,39 @@ const path = require("path");
 const responces = require("../general/responces");
 const db = require("../models/index");
 const validator = require("validator");
+const bcrypt = require("bcrypt");
+const jsonwebtoken = require("jsonwebtoken");
+const {createTokens} = require("../middlewares/JWT")
 // const multer = require("multer");
 const user = db.user;
 
 // Create user
 exports.reguser = async (req, res) => {
   try {
-    const { uName, uEmail, uPhone, uAddress } = req.body;
+    const { uName, uEmail, uPassword, uPhone, uAddress, uRole } = req.body;
     const userExist = await user.findOne({ where: { uName: uName } });
-    // if (userExist) {
-    //   return res
-    //     .status(400)
-    //     .json({ statuscode: 400, error: "User already exists", data: {} });
-    // }
+    if (userExist) {
+      return res
+        .status(400)
+        .json({ statuscode: 400, error: "User already exists", data: {} });
+    }
+    const hashedPassword = await bcrypt.hash(uPassword, 10);
     const newUser = await user.create({
       uName: uName,
       uEmail: uEmail,
+      uPassword: hashedPassword,
       uPhone: uPhone,
       uAddress: uAddress,
+      uRole: uRole,
+    });
+    const accessToken = createTokens(newUser);
+    res.cookie("access-token", accessToken, {
+      maxAge: 60 * 60 * 1000,
     });
     return res.status(responces.HTTP_STATUS_CODES.SUCCESS).json({
       statuscode: responces.HTTP_STATUS_CODES.SUCCESS,
       message: responces.messages.user.create_success,
-      data: { newUser },
+      data: {newUser},
     });
   } catch (error) {
     console.error(error);
@@ -37,6 +47,61 @@ exports.reguser = async (req, res) => {
     });
   }
 };
+
+// Login user
+exports.loginuser = async (req, res) => {
+  try {
+    const { uName, uEmail, uPassword } = req.body;
+    console.log(uName);
+    let existingUser;
+    if (uName) {
+      existingUser = await user.findOne({ where: {uName: uName} });
+    } else {
+      existingUser = await user.findOne({ where: {uEmail: uEmail} });
+    }
+    if(!uPassword){
+      return res.status(responces.HTTP_STATUS_CODES.BAD_REQUEST).json({
+        statuscode: responces.HTTP_STATUS_CODES.BAD_REQUEST,
+        message: "Password is required",
+        data: {},
+      });
+    }
+    if (!existingUser) {
+      return res
+        .status(responces.HTTP_STATUS_CODES.NOT_FOUND)
+        .json({ statuscode: 404, message: "User doesn't exist", data: {} });
+    }
+    // const dbPassword = existingUser.uPassword;
+    bcrypt
+      .compare(uPassword, existingUser.uPassword) // compare the password
+      .then((match) => {
+        if (!match) {
+          return res.status(responces.HTTP_STATUS_CODES.BAD_REQUEST).json({
+            statuscode: responces.HTTP_STATUS_CODES.BAD_REQUEST,
+            message: responces.messages.user.login_unsuccess,
+            data: {},
+          });
+        }
+        // console.log(existingUser);
+        const accessToken = createTokens(existingUser);
+        res.cookie("access-token", accessToken, {
+          maxAge: 60 * 60 * 1000,
+        });
+        return res.status(responces.HTTP_STATUS_CODES.SUCCESS).json({
+          statuscode: responces.HTTP_STATUS_CODES.SUCCESS,
+          message: responces.messages.user.login_success,
+          data: {},
+        });
+      });
+  } catch (error) {
+    console.error(error);
+    return res.status(responces.HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR).json({
+      statuscode: responces.HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR,
+      error: responces.messages.server_error,
+      data: {},
+    });
+  }
+}
 
 // Retrive user - userId
 exports.retuserid = async (req, res) => {

@@ -12,6 +12,9 @@ module.exports = (app) => {
   const bookIssueValidator = require("../middlewares/bookIssueValidator.js");
   const upload = require("../middlewares/uploadData.js");
   const uploadMultipleData = require("../middlewares/uploadMultipleData.js");
+  const { validateToken } = require("../middlewares/JWT");
+  const { authAdminToken } = require("../middlewares/JWT");
+  const { authUserToken } = require("../middlewares/JWT");
 
 var router = require("express").Router();
 
@@ -33,7 +36,12 @@ router.delete("/deleteliball", libraryController.deleteliball)
 
 // BOOK
 // Create book
-router.post("/regbook", bookValidator.validateAddBook, bookValidator.checkValidationResult, bookController.regbook)
+router.post(
+  "/regbook",
+  validateToken, authAdminToken, bookValidator.validateAddBook,
+  bookValidator.checkValidationResult,
+  bookController.regbook
+);
 // Retrieve Book - bookId
 router.get("/retbookid/:bookId", bookController.retbookid);
 // Retrieve Book - ALL
@@ -80,6 +88,8 @@ router.delete("/deleteData/:filename", userController.deleteData);
 router.post("/uploadMultipleData/:userId", uploadMultipleData, userController.uploadMultipleData);
 // delete Multiple Data
 router.delete("/deleteMultipleData/:userId", userController.deleteMultipleData);
+// login user
+router.post("/login", userController.loginuser);
 
 // Issue Book
 router.post("/bookissue", bookIssueValidator.validateAddIssue, bookIssueValidator.validationResult, bookissuing.bookissue);

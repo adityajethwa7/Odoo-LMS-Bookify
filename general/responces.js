@@ -16,6 +16,8 @@ module.exports = {
         user: {
             create_success: "User created successfully",
             retrieve_success: "User(s) retrieved successfully",
+            login_success: "User logged in successfully",
+            login_unsuccess: "Invalid email or password",
             update_success: "User Updated successfully",
             delete_success: "User(s) deleted successfully",
             not_found: "User Not found",
