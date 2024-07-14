@@ -5,5 +5,4 @@ import postcss from 'postcss';
 
 export default defineConfig({
   plugins: [react(), postcss({ plugins: [autoprefixer] })],
-  // ... other Vite configurations
 });
