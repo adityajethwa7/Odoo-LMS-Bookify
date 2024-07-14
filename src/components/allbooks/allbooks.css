@@ -1,0 +1,50 @@
+.library-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+  }
+  
+  .new-arrivals, .trending {
+    width: 45%;
+  }
+  
+  .new-arrivals h2, .trending h2 {
+    font-family: 'Arial', sans-serif; /* Change font if necessary */
+    font-size: 24px; /* Adjust size as needed */
+    margin-bottom: 20px;
+  }
+  
+  .book {
+    display: flex;
+    align-items: start;
+    margin-bottom: 20px;
+  }
+  
+  .book img {
+    width: 100px; /* Adjust size as needed */
+    height: auto;
+    margin-right: 15px;
+  }
+  
+  .book-details {
+    font-family: 'Arial', sans-serif; /* Change font if necessary */
+    font-size: 16px; /* Adjust size as needed */
+  }
+  
+  .book-details h3 {
+    margin: 0;
+    font-size: 18px; /* Adjust size as needed */
+  }
+  
+  .book-details p {
+    margin: 5px 0;
+  }
+  
+  .description {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  

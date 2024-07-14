@@ -1,12 +1,26 @@
 
-import LoginSignup from './components/LoginSignup/LoginSignup';
+// import './App.css'
+import Home from  './components/homepage/homepage';
+import { BrowserRouter as Router,Routes,Route } from 'react-router-dom';
+import Login from './components/login/login'
+import Signup from './components/login/signup'
+import './index.css'
 
-const App = () => {
+function App() {
   return (
-    <div className="container mx-auto p-4">
-      <LoginSignup />
+    <div className="App">
+      <Router>
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        </Routes>
+      </Router>
     </div>
+
+    // <Event />
   );
-};
+}
+
 
 export default App;
