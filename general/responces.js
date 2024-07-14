@@ -48,4 +48,4 @@ module.exports = {
             delete_success: "Issue data deleted successfully"
         }
     }
-}
+}   

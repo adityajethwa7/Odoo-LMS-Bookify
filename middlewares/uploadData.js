@@ -4,10 +4,10 @@ const multer = require("multer");
 const upload = multer({
   storage: multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, "uploads"); // cb = callback
+      cb(null, __dirname + "/uploads"); // cb = callback
     },
     filename: function (req, file, cb) {
-      cb(null, file.originalname + "-" + Date.now() + ".jpg");
+      cb(null, Date.now() + "-" + file.originalname);
     },
   }),
 }).single("user_file");

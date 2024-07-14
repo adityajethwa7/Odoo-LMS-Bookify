@@ -14,8 +14,8 @@ exports.bookissue = async (req, res) => {
     const { userId, bookIde, assignedDate, dueDate, returnDate, libraryId } =
       req.body;
     const existingUser = await user.findOne({ where: { id: userId } });
-    const existingBook = await user.findOne({ where: { id: bookIde } });
-    const existingLib = await user.findOne({ where: { id: libraryId } });
+    const existingBook = await book.findOne({ where: { id: bookIde } });
+    const existingLib = await library.findOne({ where: { id: libraryId } });
     if (!existingUser) {
       return res.status(responces.HTTP_STATUS_CODES.BAD_REQUEST).json({
         statuscode: responces.HTTP_STATUS_CODES.NOT_FOUND,

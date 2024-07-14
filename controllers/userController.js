@@ -204,13 +204,20 @@ exports.upload = async (req, res) => {
         data: {},
       });
     }
-    await existingUser.update({ userProfilePic: file.filename });
-    console.log(req.file);
-    return res.status(responces.HTTP_STATUS_CODES.SUCCESS).json({
-      statuscode: responces.HTTP_STATUS_CODES.SUCCESS,
-      message: "filename uploaded successfully!",
-      data: file.fileName,
-    });
+    const filename = req.file ? req.file.filename : null;
+    if(filename){
+      await existingUser.update({ userProfilePic: file.filename });
+      console.log(req.file);
+      return res.status(responces.HTTP_STATUS_CODES.SUCCESS).json({
+        statuscode: responces.HTTP_STATUS_CODES.SUCCESS,
+        message: "filename uploaded successfully!",
+        data: file.fileName,
+      });
+    }
+    else{
+      
+    }
+    
   } catch (error) {
     console.error(error);
     return res.status(responces.HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR).json({

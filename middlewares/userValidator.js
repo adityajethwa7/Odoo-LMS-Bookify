@@ -37,7 +37,7 @@ module.exports.validateAddUser = [
 
     // Phone number
     check('uPhone')
-    .not().isNumeric().withMessage("Only numbers are allowed in phone number")
+    .isNumeric().withMessage("Only numbers are allowed in phone number")
     .custom(async (uPhone, {req}) => {
         const isPhoneTaken = await user.findOne({where: {uPhone: uPhone}});
 
@@ -59,10 +59,10 @@ module.exports.validateAddUser = [
     .optional().isIn(['Ahmedabad','Surat','Vadodara','Rajkot']).withMessage("Please select from Ahmedabad, Surat, Vadodara or Rajkot only"),
 
     //Password
-    check('uPassword')
-    .notEmpty().withMessage("Password is required")
-    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>])[a-zA-Z0-9!@#$%^&*()\-_=+{};:,<.>]{8,}$/)
-    .withMessage('Password must be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, one digit, and one special character.'),
+    // check('uPassword')
+    // .notEmpty().withMessage("Password is required")
+    // .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\-_=+{};:,<.>])[a-zA-Z0-9!@#$%^&*()\-_=+{};:,<.>]{8,}$/)
+    // .withMessage('Password must be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, one digit, and one special character.'),
 ];  
 
 module.exports.checkValidationResult =  (req, res, next) => {

@@ -2,6 +2,8 @@ const responces = require("../general/responces");
 const db = require("../models/index");
 const book = db.book;
 const library = db.library;
+const author = db.author;
+const bookAuthor = db.bookAuthor;
 
 // Create Book
 exports.regbook = async (req, res) => {
@@ -49,8 +51,9 @@ exports.regbook = async (req, res) => {
           authorId: newAuthor.id,
         });
       }
+      console.log("Hi");
       res.status(responces.HTTP_STATUS_CODES.SUCCESS).json({
-        staus: responces.HTTP_STATUS_CODES.CREATED,
+        status: responces.HTTP_STATUS_CODES.CREATED,
         message: responces.messages.book.create_success,
         data: newBook,
       });
