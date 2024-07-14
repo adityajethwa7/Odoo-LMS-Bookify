@@ -1,1 +1,1 @@
-# Library-Management-System
+# odoo_lms
