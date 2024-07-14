@@ -136,19 +136,20 @@
 
 
 import React from 'react';
-import './navbar.css'; // Assuming you are using a separate CSS file for styles
+import Navbar from '../Navbar/navbar';
+import SearchBar from '../searchbar/searchbar';
+import Allbooks from '../allbooks/allbooks';
+// import './home.css'; // Assuming you are using a separate CSS file for styles
 
-const Navbar = () => {
+const HomePage = () => {
   return (
-    <div className="navbar">
-      <div className="logo">
-        <img src="images/logo.jpg" alt="Books" />
-        <span>Public Library</span>
-      </div>
-      <button className="login-button">Login</button>
-    </div>
+    <>
+    <Navbar/>
+    {/* <SearchBar/> */}
+    <Allbooks/>
+    </>
   );
 };
 
-export default Navbar;
+export default HomePage;
 
